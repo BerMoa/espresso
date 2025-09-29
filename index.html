@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Espresso Dial-In Engine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="branding">
+        <h1>Espresso</h1>
+        <p class="tagline">Science-driven dial-in intelligence</p>
+      </div>
+      <div class="header-meta">
+        <span class="pill">Auto-dial-in</span>
+        <span class="pill">v0.2</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="panel" aria-labelledby="input-title">
+        <div class="panel-header">
+          <h2 id="input-title">Shot inputs</h2>
+          <p>Capture recipe variables, taste feedback, and prep observations.</p>
+        </div>
+
+        <form id="dialForm" novalidate>
+          <fieldset>
+            <legend>Coffee profile</legend>
+            <div class="field-grid">
+              <label>
+                Bean name
+                <input type="text" id="beanName" placeholder="e.g. Ethiopia Halo" />
+              </label>
+              <label>
+                Process
+                <select id="process">
+                  <option value="washed">Washed</option>
+                  <option value="natural">Natural</option>
+                  <option value="honey">Honey</option>
+                  <option value="anaerobic">Anaerobic</option>
+                  <option value="carbonic">Carbonic maceration</option>
+                </select>
+              </label>
+              <label>
+                Roast level
+                <select id="roast">
+                  <option value="light">Light</option>
+                  <option value="medium" selected>Medium</option>
+                  <option value="medium-dark">Medium-dark</option>
+                  <option value="dark">Dark</option>
+                </select>
+              </label>
+              <label>
+                Roast date
+                <input type="date" id="roastDate" />
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Shot context</legend>
+            <div class="field-grid">
+              <label>
+                Beverage
+                <select id="drinkType">
+                  <option value="straight" selected>Straight espresso</option>
+                  <option value="milk">Milk drink</option>
+                </select>
+              </label>
+              <label>
+                Shot style
+                <select id="shotStyle">
+                  <option value="normale" selected>Normale (≈1:2)</option>
+                  <option value="ristretto">Ristretto (1.0–1.7)</option>
+                  <option value="lungo">Lungo (2.5–3.0)</option>
+                </select>
+              </label>
+              <label>
+                Machine / grinder notes
+                <input type="text" id="equipment" placeholder="e.g. Lelit + Niche" />
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Recipe</legend>
+            <div class="field-grid">
+              <label>
+                Dose (g)
+                <input type="number" id="dose" inputmode="decimal" min="10" max="30" step="0.1" value="18" required />
+              </label>
+              <label>
+                Yield (g)
+                <input type="number" id="yield" inputmode="decimal" min="20" max="70" step="0.1" value="36" required />
+              </label>
+              <label>
+                Shot time (s)
+                <input type="number" id="time" inputmode="decimal" min="10" max="60" step="0.1" value="28" required />
+              </label>
+              <label>
+                Water temp (°C)
+                <input type="number" id="temperature" inputmode="decimal" min="80" max="100" step="0.1" value="93" />
+              </label>
+              <label>
+                Grind setting
+                <input type="text" id="grind" placeholder="e.g. 5.2 on Niche" />
+              </label>
+              <label>
+                Prep notes
+                <input type="text" id="prepNotes" placeholder="WDT + level tamp" />
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Taste snapshot</legend>
+            <p class="help-text">Drag the sliders and mark the descriptors that matched the cup.</p>
+            <div class="slider-grid">
+              <div class="slider">
+                <label for="sweetness">Sweetness</label>
+                <input type="range" id="sweetness" min="0" max="10" value="5" />
+                <span class="slider-value" data-for="sweetness">5</span>
+              </div>
+              <div class="slider">
+                <label for="acidity">Acidity</label>
+                <input type="range" id="acidity" min="0" max="10" value="5" />
+                <span class="slider-value" data-for="acidity">5</span>
+              </div>
+              <div class="slider">
+                <label for="bitterness">Bitterness</label>
+                <input type="range" id="bitterness" min="0" max="10" value="5" />
+                <span class="slider-value" data-for="bitterness">5</span>
+              </div>
+              <div class="slider">
+                <label for="body">Body / texture</label>
+                <input type="range" id="body" min="0" max="10" value="5" />
+                <span class="slider-value" data-for="body">5</span>
+              </div>
+            </div>
+
+            <div class="chip-field">
+              <p class="chip-label">Taste descriptors</p>
+              <div class="chip-group" role="group" aria-label="Taste descriptors">
+                <label class="chip">
+                  <input type="checkbox" name="tasteFlags" value="sour" />
+                  <span>Sour</span>
+                </label>
+                <label class="chip">
+                  <input type="checkbox" name="tasteFlags" value="bitter" />
+                  <span>Bitter</span>
+                </label>
+                <label class="chip">
+                  <input type="checkbox" name="tasteFlags" value="astringent" />
+                  <span>Astringent</span>
+                </label>
+                <label class="chip">
+                  <input type="checkbox" name="tasteFlags" value="burnt" />
+                  <span>Burnt</span>
+                </label>
+                <label class="chip">
+                  <input type="checkbox" name="tasteFlags" value="weak" />
+                  <span>Weak / thin</span>
+                </label>
+                <label class="chip">
+                  <input type="checkbox" name="tasteFlags" value="hollow" />
+                  <span>Hollow (sour + bitter)</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="chip-field">
+              <p class="chip-label">Visual cues</p>
+              <div class="chip-group" role="group" aria-label="Visual cues">
+                <label class="chip">
+                  <input type="checkbox" name="visualFlags" value="gushing" />
+                  <span>Gushing start</span>
+                </label>
+                <label class="chip">
+                  <input type="checkbox" name="visualFlags" value="blonding_early" />
+                  <span>Blonding early</span>
+                </label>
+                <label class="chip">
+                  <input type="checkbox" name="visualFlags" value="blonding_late" />
+                  <span>Blonding very late</span>
+                </label>
+                <label class="chip">
+                  <input type="checkbox" name="visualFlags" value="slow_drip" />
+                  <span>Slow drip / choke</span>
+                </label>
+                <label class="chip">
+                  <input type="checkbox" name="visualFlags" value="spritzing" />
+                  <span>Spritzing / channeling</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="chip-field">
+              <p class="chip-label">Prep flags</p>
+              <div class="chip-group" role="group" aria-label="Prep flags">
+                <label class="chip">
+                  <input type="checkbox" name="prepFlags" value="no_wdt" />
+                  <span>No WDT / distribution</span>
+                </label>
+                <label class="chip">
+                  <input type="checkbox" name="prepFlags" value="uneven_tamp" />
+                  <span>Uneven tamp</span>
+                </label>
+                <label class="chip">
+                  <input type="checkbox" name="prepFlags" value="overdosed" />
+                  <span>Overdosed basket</span>
+                </label>
+                <label class="chip">
+                  <input type="checkbox" name="prepFlags" value="screen_imprint" />
+                  <span>Screen imprint</span>
+                </label>
+              </div>
+            </div>
+          </fieldset>
+
+          <label class="notes-field">
+            Additional shot notes
+            <textarea id="shotNotes" rows="3" placeholder="e.g. fast first drip, slight spritzing"></textarea>
+          </label>
+
+          <button type="submit" class="primary">Diagnose shot</button>
+        </form>
+      </section>
+
+      <section class="panel results" aria-labelledby="results-title">
+        <div class="panel-header">
+          <h2 id="results-title">Diagnosis &amp; target</h2>
+          <p>Actionable adjustments grounded in the heuristics.</p>
+        </div>
+        <div class="results-grid">
+          <article class="result-card" id="diagnosisCard">
+            <h3>Diagnosis</h3>
+            <p id="diagnosisText" class="muted">Log a shot to see insights.</p>
+            <p id="confidenceText" class="muted"></p>
+            <h4 class="subheading">Rationale</h4>
+            <ul id="rationaleList" class="bullet-list"></ul>
+            <h4 class="subheading">Risks</h4>
+            <ul id="riskList" class="bullet-list"></ul>
+          </article>
+          <article class="result-card" id="targetCard">
+            <h3>Target recipe</h3>
+            <dl id="targetRecipe" class="metric-grid muted">
+              <div><dt>Dose</dt><dd>–</dd></div>
+              <div><dt>Yield</dt><dd>–</dd></div>
+              <div><dt>Ratio</dt><dd>–</dd></div>
+              <div><dt>Time</dt><dd>–</dd></div>
+              <div><dt>Temp</dt><dd>–</dd></div>
+              <div><dt>Grind</dt><dd>–</dd></div>
+              <div><dt>Preinfusion</dt><dd>–</dd></div>
+            </dl>
+            <h4 class="subheading">Prep focus</h4>
+            <ul id="prepFocusList" class="bullet-list"></ul>
+            <p id="targetNotes" class="muted hidden"></p>
+            <h4 class="subheading">Next actions</h4>
+            <ul id="actionList" class="action-list"></ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="presets-title">
+        <div class="panel-header">
+          <h2 id="presets-title">Testable presets</h2>
+          <p>Three quick explorations per bean.</p>
+        </div>
+        <div id="presetCards" class="preset-grid">
+          <p class="muted">Run a diagnosis to generate presets.</p>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="profiles-title">
+        <div class="panel-header">
+          <h2 id="profiles-title">Bean profiles</h2>
+          <p>Save, load, and compare dial-ins. Stored locally.</p>
+        </div>
+        <div class="profile-actions">
+          <button id="saveProfile" class="secondary">Save current bean</button>
+          <button id="clearProfiles" class="danger" type="button">Clear all</button>
+        </div>
+        <div class="profiles-layout">
+          <div>
+            <h3 class="subheading">Saved beans</h3>
+            <div id="profileList" class="profile-list muted">No profiles saved yet.</div>
+          </div>
+          <div>
+            <h3 class="subheading">Quick compare</h3>
+            <label class="compare-select">
+              Against
+              <select id="compareSelect">
+                <option value="">Select saved bean</option>
+              </select>
+            </label>
+            <div id="comparison" class="comparison muted">Pick a bean to compare.</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p>
+        Built for baristas dialing-in faster. Feedback makes it smarter — log each
+        shot and refine.
+      </p>
+    </footer>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>
